@@ -1,0 +1,104 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root { color-scheme: dark; }
+
+html, body, #root { height: 100%; }
+
+body {
+  @apply bg-ink-900 text-mist-100 font-sans antialiased;
+  background-image:
+    radial-gradient(900px 500px at 15% -10%, rgba(94, 234, 212, 0.07), transparent 60%),
+    radial-gradient(700px 420px at 95% 0%, rgba(129, 140, 248, 0.06), transparent 60%);
+  background-attachment: fixed;
+}
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { @apply bg-ink-500 rounded-full; }
+::-webkit-scrollbar-track { background: transparent; }
+
+/* ---------- title screen ---------- */
+
+.splash {
+  background: #07070b;
+  transition: opacity .6s cubic-bezier(.4,0,.2,1), filter .6s cubic-bezier(.4,0,.2,1);
+}
+.splash.is-leaving { opacity: 0; filter: blur(6px); pointer-events: none; }
+.splash.is-leaving .splash-stage { transform: translateY(-18px) scale(.97); }
+
+.splash-stage { transition: transform .6s cubic-bezier(.4,0,.2,1); }
+
+.splash-glow {
+  position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(620px 380px at 50% 42%, rgba(94,234,212,.13), transparent 65%),
+    radial-gradient(900px 500px at 50% 120%, rgba(129,140,248,.10), transparent 60%);
+  animation: splashGlow 1.6s ease both;
+}
+@keyframes splashGlow { from { opacity: 0 } to { opacity: 1 } }
+
+.splash-word { font-size: clamp(3.4rem, 14vw, 8.5rem); line-height: .95; }
+
+.splash-ch {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(.42em);
+  filter: blur(10px);
+  animation: chIn .78s cubic-bezier(.22,1,.36,1) both;
+  animation-delay: calc(var(--i) * 72ms + 120ms);
+}
+.splash-dot { animation-delay: calc(var(--i) * 72ms + 260ms); }
+@keyframes chIn {
+  to { opacity: 1; transform: none; filter: blur(0); }
+}
+
+.splash-eyebrow {
+  opacity: 0;
+  animation: fadeUp .7s ease both;
+  animation-delay: 60ms;
+}
+
+.splash-rule {
+  height: 1px; width: min(420px, 72vw);
+  background: linear-gradient(90deg, transparent, #5eead4, transparent);
+  transform: scaleX(0);
+  animation: ruleIn .9s cubic-bezier(.22,1,.36,1) both;
+  animation-delay: 700ms;
+}
+@keyframes ruleIn { to { transform: scaleX(1); } }
+
+.splash-sub { opacity: 0; animation: fadeUp .8s ease both; animation-delay: 900ms; }
+.splash-cta { opacity: 0; animation: fadeUp .8s ease both; animation-delay: 1150ms; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* app reveal once the title screen clears */
+.app-enter { animation: appIn .55s cubic-bezier(.22,1,.36,1) both; }
+@keyframes appIn {
+  from { opacity: 0; transform: scale(.994); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .splash, .splash-stage, .splash-ch, .splash-rule, .splash-sub,
+  .splash-cta, .splash-eyebrow, .splash-glow, .app-enter {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+}
+
+@layer components {
+  .card { @apply bg-ink-800/70 border border-line rounded-xl backdrop-blur-sm; }
+  .chip { @apply inline-flex items-center gap-1.5 rounded-md border border-line bg-ink-700 px-2 py-0.5 font-mono text-[11px] text-mist-300; }
+  .label { @apply font-mono text-[10px] uppercase tracking-[0.14em] text-mist-500; }
+  .btn { @apply rounded-lg px-3.5 py-2 text-sm font-medium transition disabled:opacity-40 disabled:cursor-not-allowed; }
+  .btn-primary { @apply btn bg-acc text-ink-900 hover:bg-acc-deep; }
+  .btn-ghost { @apply btn border border-line text-mist-300 hover:text-mist-100 hover:border-mist-500; }
+}

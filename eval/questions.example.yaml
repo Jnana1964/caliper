@@ -1,0 +1,67 @@
+# Evaluation set.
+#
+# Copy to eval/questions.yaml and replace every entry with questions written
+# from YOUR ingested documents. The examples below use the FICTIONAL fixture
+# schemes so the harness is runnable before you ingest anything real; they
+# prove nothing about real retrieval quality.
+#
+# kind:
+#   answerable   - the corpus settles it. Expect outcome "answered".
+#   unanswerable - plausible, on-topic, but the corpus does not cover it.
+#                  Expect a refusal. This is the half most RAG demos skip,
+#                  and it is the half that shows whether the system guesses.
+#   out_of_scope - not about schemes at all. Expect refusal at the router.
+#
+# must_contain: lowercase substrings the answer must include (facts, figures).
+# must_not_contain: substrings that indicate a hallucinated or wrong claim.
+# expect_source: filename the citation should point at.
+
+- id: ffss-benefit
+  kind: answerable
+  question: What is the annual benefit amount under the Fictional Farmer Support Scheme?
+  must_contain: ["9,000"]
+  expect_source: fictional-scheme-a.txt
+
+- id: ffss-land-limit
+  kind: answerable
+  question: What is the maximum landholding allowed under FFSS?
+  must_contain: ["2 hectare"]
+  expect_source: fictional-scheme-a.txt
+
+- id: ffss-instalments
+  kind: answerable
+  question: How many instalments is the FFSS benefit paid in?
+  must_contain: ["three", "3,000"]
+  expect_source: fictional-scheme-a.txt
+
+- id: fsmg-income-cap
+  kind: answerable
+  question: What is the family income limit for the Fictional Student Merit Grant?
+  must_contain: ["4,50,000"]
+  expect_source: fictional-scheme-b.txt
+
+- id: fsmg-window
+  kind: answerable
+  question: When does the FSMG application window close?
+  must_contain: ["30 september"]
+  expect_source: fictional-scheme-b.txt
+
+- id: ffss-appeal-process
+  kind: unanswerable
+  question: What is the appeal process if an FFSS application is rejected?
+
+- id: fsmg-disability-quota
+  kind: unanswerable
+  question: Does FSMG reserve any percentage of grants for students with disabilities?
+
+- id: ffss-nri-eligibility
+  kind: unanswerable
+  question: Can a non-resident Indian who owns farmland claim FFSS?
+
+- id: off-topic-cricket
+  kind: out_of_scope
+  question: Who won the cricket match between India and Australia yesterday?
+
+- id: off-topic-code
+  kind: out_of_scope
+  question: Write me a Python function that reverses a linked list.

@@ -1,0 +1,25 @@
+# Token pricing, in USD per 1,000,000 tokens.
+#
+# These numbers are NOT hardcoded in the application on purpose. Published API
+# prices change, and a cost figure whose provenance nobody recorded is worse
+# than no cost figure at all. Fill these in from the official page, record the
+# date you checked, and the service will start reporting cost_usd. Until
+# `verified` is true, every response reports cost_usd: null and /metrics
+# reports cost as unconfigured, rather than quoting a number that may be wrong.
+#
+# Official source: https://ai.google.dev/gemini-api/docs/pricing
+
+verified: false
+source_url: https://ai.google.dev/gemini-api/docs/pricing
+verified_on: null # YYYY-MM-DD, the day you read the page above
+
+models:
+  gemini-2.5-flash:
+    input_per_mtok: null
+    output_per_mtok: null
+  gemini-2.5-flash-lite:
+    input_per_mtok: null
+    output_per_mtok: null
+  gemini-embedding-001:
+    input_per_mtok: null
+    output_per_mtok: 0.0

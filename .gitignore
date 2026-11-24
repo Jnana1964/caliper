@@ -1,0 +1,14 @@
+.env
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+traces/*.jsonl
+eval/results.json
+eval/questions.yaml
+docs/*.pdf
+docs/*.PDF
+.DS_Store
+frontend/node_modules/
+frontend/dist/
