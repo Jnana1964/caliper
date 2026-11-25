@@ -10,6 +10,20 @@ Python · FastAPI · LangGraph · Gemini · Qdrant · React
 
 ---
 
+## Demo
+
+![Caliper answering, then refusing](media/caliper-demo.gif)
+
+An answer released with its citation, then a draft withheld because the sources did not support it.
+
+**Full walkthrough, 64 seconds:** [`media/caliper-demo.mp4`](media/caliper-demo.mp4) — one answer and all three refusal paths, with the agent trace and the cost panel.
+
+**Presentation, 13 slides:** [`media/caliper-deck.pdf`](media/caliper-deck.pdf) — architecture, the three refusal paths, the evaluation design and references.
+
+Both were recorded against the deterministic offline stub, so the answer *text* is a placeholder. What they show is the decision path and the refusal gates, not answer quality. See [Results](#results).
+
+---
+
 ## Why refusal is the feature
 
 A demo that answers everything is easy. The hard part — and the part that matters when the subject is who qualifies for a ₹6,000 benefit — is knowing when the retrieved text does **not** settle the question.
