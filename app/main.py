@@ -66,12 +66,68 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
+import collections as _collections
+import os as _os
+import time as _time
+
+from fastapi.responses import JSONResponse as _JSONResponse
+
+# The deployed frontend and this API share one origin, so a browser never makes
+# a cross origin request in production. This list is for local development and
+# for anyone running the stack themselves; ALLOWED_ORIGINS can extend it.
+_ORIGINS = [
+    o.strip()
+    for o in _os.getenv(
+        "ALLOWED_ORIGINS",
+        "http://localhost:5173,http://localhost:4173,http://127.0.0.1:5173",
+    ).split(",")
+    if o.strip()
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # dev convenience; narrow this before any real deployment
-    allow_methods=["*"],
+    allow_origins=_ORIGINS,
+    allow_methods=["GET", "POST"],
     allow_headers=["*"],
 )
+
+# Public demo guard.
+#
+# This service answers from a free model quota that one visitor, or one script,
+# could exhaust in a minute. The failure mode is what matters: once the quota is
+# gone every question errors, which reads as a broken project rather than a busy
+# one. So the demo refuses politely before the quota does, and says why.
+#
+# The window is per running instance, not global. On serverless a burst spread
+# across instances can exceed the nominal rate. It is a speed bump against
+# casual abuse, not a quota system, and the README says so rather than
+# overclaiming it here.
+_ASK_PATHS = ("/ask", "/ask/stream")
+_MAX_ASKS_PER_HOUR = int(_os.getenv("MAX_ASKS_PER_HOUR", "60"))
+_ask_times = _collections.deque()
+
+
+@app.middleware("http")
+async def cap_public_demo(request, call_next):
+    if request.method == "POST" and request.url.path in _ASK_PATHS:
+        now = _time.time()
+        while _ask_times and now - _ask_times[0] > 3600:
+            _ask_times.popleft()
+        if len(_ask_times) >= _MAX_ASKS_PER_HOUR:
+            minutes = max(1, int(3600 - (now - _ask_times[0])) // 60)
+            return _JSONResponse(
+                status_code=429,
+                content={
+                    "detail": (
+                        f"This public demo answers at most {_MAX_ASKS_PER_HOUR} questions "
+                        f"an hour, so one visitor cannot exhaust the free model quota for "
+                        f"everyone else. Try again in about {minutes} minutes, or run it "
+                        f"yourself: github.com/Jnana1964/caliper"
+                    )
+                },
+            )
+        _ask_times.append(now)
+    return await call_next(request)
 
 
 def _graph(mode: str):
