@@ -24,6 +24,24 @@ SYSTEM = (
 )
 
 
+def _cited_markers(text: str) -> set[int]:
+    """Marker numbers actually cited in an answer.
+
+    The model writes citations in several shapes: [S1], [S1, S2] and [S1][S2].
+    Testing for the literal string "[S1]" matches only the first, so a grouped
+    citation produced an answer that displayed markers with no sources behind
+    it: the one failure this system must not have. Numbers are read only from
+    inside bracketed groups, so a stray "S1" in prose is not mistaken for a
+    citation.
+    """
+    import re
+
+    out: set[int] = set()
+    for group in re.findall(r"\[([^\]]+)\]", text):
+        out.update(int(n) for n in re.findall(r"S(\d+)", group))
+    return out
+
+
 def _timed(node: str):
     def deco(fn):
         def wrapper(state: GraphState, *a, **kw):
@@ -130,6 +148,7 @@ def make_nodes(llm, store):
         )
         res = state["meter"].add(llm.generate(prompt, system=SYSTEM))
         text = res.text.strip()
+        cited = _cited_markers(text)
         cites = [
             Citation(
                 marker=f"S{i}",
@@ -138,7 +157,7 @@ def make_nodes(llm, store):
                 chunk_id=r.chunk.chunk_id,
             )
             for i, r in enumerate(items, start=1)
-            if f"[S{i}]" in text
+            if i in cited
         ]
         return {"answer": text, "citations": cites}
 

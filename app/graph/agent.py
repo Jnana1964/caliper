@@ -17,7 +17,7 @@ import time
 from ..models import Citation, NodeTiming, Retrieved
 from ..models import Chunk
 from ..tools import build_toolbox, run_tool, toolbox_spec
-from .nodes import SYSTEM, _format_excerpts
+from .nodes import SYSTEM, _cited_markers, _format_excerpts
 from .state import GraphState
 
 MAX_STEPS_DEFAULT = 5
@@ -146,7 +146,7 @@ def make_agent_nodes(llm, store, max_steps: int = MAX_STEPS_DEFAULT):
         cites = [
             Citation(marker=f"S{i}", source=r.chunk.source, page=r.chunk.page, chunk_id=r.chunk.chunk_id)
             for i, r in enumerate(items, start=1)
-            if f"[S{i}]" in text
+                        if i in _cited_markers(text)
         ]
         return {
             "answer": text,

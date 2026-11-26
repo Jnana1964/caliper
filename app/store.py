@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import re
+import time
 import uuid
 
 from rank_bm25 import BM25Okapi
@@ -92,7 +93,9 @@ class HybridStore:
             from qdrant_client import QdrantClient
 
             self._client = QdrantClient(
-                url=self.s.qdrant_url, api_key=self.s.qdrant_api_key or None
+                url=self.s.qdrant_url,
+                api_key=self.s.qdrant_api_key or None,
+                timeout=120,
             )
         return self._client
 
@@ -106,22 +109,91 @@ class HybridStore:
                 vectors_config=VectorParams(size=self.s.embed_dim, distance=Distance.COSINE),
             )
 
-    def upsert(self, chunks: list[Chunk], batch: int = 64) -> int:
+    def _stored_ids(self, ids: list[str]) -> set[str]:
+        """Which of these chunk ids are already in the collection.
+
+        Chunk ids are deterministic, so anything already stored is identical to
+        what would be produced now. Skipping those makes a rerun cheap, which
+        matters when the embedding quota is the binding constraint.
+        """
+        found: set[str] = set()
+        for i in range(0, len(ids), 256):
+            try:
+                got = self.client.retrieve(
+                    collection_name=self.s.collection,
+                    ids=ids[i : i + 256],
+                    with_payload=False,
+                    with_vectors=False,
+                )
+            except Exception:
+                return found
+            found.update(str(p.id) for p in got)
+        return found
+
+    def _write(self, points, attempts: int = 5) -> None:
+        """Write one small slice, retrying on network failure.
+
+        A free tier cluster on another continent will occasionally drop a large
+        write. Points carry deterministic ids, so a retry is idempotent and a
+        partially written batch is not a corruption risk.
+        """
+        delay = 3.0
+        for attempt in range(1, attempts + 1):
+            try:
+                self.client.upsert(collection_name=self.s.collection, points=points)
+                return
+            except Exception as exc:
+                if attempt == attempts:
+                    raise
+                print(
+                    f"  qdrant write failed ({type(exc).__name__}), "
+                    f"retry {attempt} of {attempts - 1} in {delay:.0f}s",
+                    flush=True,
+                )
+                time.sleep(delay)
+                delay = min(delay * 2, 30)
+
+    def upsert(self, chunks: list[Chunk], batch: int = 50, pause: float = 40.0,
+               write_batch: int = 16, skip_stored: bool = True) -> int:
+        """Embed and store in paced batches.
+
+        The embedding API counts every piece of text as one request against a
+        per minute quota, so a batch of 50 spends 50 of the allowance. Pausing
+        between batches keeps the rate under the ceiling. The vectors then go to
+        Qdrant in smaller slices, because one request carrying fifty 768
+        dimension vectors is large enough to time out on a slow uplink.
+        """
         from qdrant_client.models import PointStruct
 
         self.ensure_collection()
+
+        if skip_stored:
+            have = self._stored_ids([c.chunk_id for c in chunks])
+            if have:
+                remaining = [c for c in chunks if c.chunk_id not in have]
+                print(
+                    f"  {len(chunks) - len(remaining)} chunks already stored, "
+                    f"{len(remaining)} to go",
+                    flush=True,
+                )
+                chunks = remaining
+        if not chunks:
+            return 0
+
         total = 0
         for i in range(0, len(chunks), batch):
             part = chunks[i : i + batch]
+            if i:
+                time.sleep(pause)
             vecs = self.llm.embed([c.text for c in part], dim=self.s.embed_dim)
-            self.client.upsert(
-                collection_name=self.s.collection,
-                points=[
-                    PointStruct(id=c.chunk_id, vector=v, payload=c.model_dump())
-                    for c, v in zip(part, vecs)
-                ],
-            )
+            points = [
+                PointStruct(id=c.chunk_id, vector=v, payload=c.model_dump())
+                for c, v in zip(part, vecs)
+            ]
+            for j in range(0, len(points), write_batch):
+                self._write(points[j : j + write_batch])
             total += len(part)
+            print(f"  stored {total}/{len(chunks)}", flush=True)
         return total
 
     def load_lexical_index(self) -> int:

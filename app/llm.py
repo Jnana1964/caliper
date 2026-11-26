@@ -153,6 +153,36 @@ class GeminiLLM:
         self._s = s
         self.model = s.gen_model
 
+    # Transient server side conditions. 429 is the free tier rate limit, 503 is
+    # the model being overloaded, 500 is an internal fault. None of them mean
+    # the request was wrong, so all of them are worth retrying.
+    _RETRYABLE = ("429", "RESOURCE_EXHAUSTED", "503", "UNAVAILABLE", "500", "INTERNAL")
+
+    def _with_retry(self, fn, label: str, attempts: int = 6):
+        """Call fn, backing off on transient API failures.
+
+        When the API states how long to wait, that figure is honoured rather
+        than guessed at. A non transient error is re-raised immediately, so a
+        bad request still fails fast instead of being retried six times.
+        """
+        wait = 4.0
+        for attempt in range(1, attempts + 1):
+            try:
+                return fn()
+            except Exception as exc:
+                msg = str(exc)
+                if attempt == attempts or not any(t in msg for t in self._RETRYABLE):
+                    raise
+                m = re.search(r"retry in ([0-9.]+)s", msg)
+                pause = float(m.group(1)) + 3 if m else wait
+                print(
+                    f"  {label}: transient API failure, sleeping {pause:.0f}s "
+                    f"(attempt {attempt} of {attempts})",
+                    flush=True,
+                )
+                time.sleep(pause)
+                wait = min(wait * 2, 90)
+
     def generate(self, prompt: str, system: str | None = None, json_out: bool = False) -> LLMResult:
         from google.genai import types
 
@@ -162,8 +192,11 @@ class GeminiLLM:
             response_mime_type="application/json" if json_out else None,
         )
         t0 = time.perf_counter()
-        resp = self._client.models.generate_content(
-            model=self._s.gen_model, contents=prompt, config=cfg
+        resp = self._with_retry(
+            lambda: self._client.models.generate_content(
+                model=self._s.gen_model, contents=prompt, config=cfg
+            ),
+            "generate",
         )
         ms = (time.perf_counter() - t0) * 1000
         u = getattr(resp, "usage_metadata", None)
@@ -176,13 +209,24 @@ class GeminiLLM:
         )
 
     def embed(self, texts: list[str], dim: int | None = None, task: str = "RETRIEVAL_DOCUMENT") -> list[list[float]]:
+        """Embed a batch, retrying on transient API failures.
+
+        Google counts every piece of text as one request against the per minute
+        embedding quota, so a batch of 50 spends 50 of the allowance. When the
+        quota is exhausted the API replies 429 and states how long to wait; that
+        figure is parsed and honoured rather than guessed at.
+        """
         from google.genai import types
 
         cfg = types.EmbedContentConfig(
             task_type=task, output_dimensionality=dim or self._s.embed_dim
         )
-        resp = self._client.models.embed_content(
-            model=self._s.embed_model, contents=texts, config=cfg
+        resp = self._with_retry(
+            lambda: self._client.models.embed_content(
+                model=self._s.embed_model, contents=texts, config=cfg
+            ),
+            "embed",
+            attempts=8,
         )
         return [list(e.values) for e in resp.embeddings]
 

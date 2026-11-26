@@ -80,6 +80,8 @@ def grade_one(q: dict, out: dict) -> dict:
         if not src_ok:
             reasons.append(f"cited {sorted(sources) or 'nothing'}, expected {want_src}")
         row["why"] = "; ".join(reasons)
+        row["answer"] = (out.get("answer") or "")[:600]
+        row["citations"] = sorted(sources)
     return row
 
 

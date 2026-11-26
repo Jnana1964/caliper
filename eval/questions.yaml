@@ -1,0 +1,141 @@
+- id: topclass-income-ceiling
+  kind: answerable
+  question: What is the annual family income ceiling for a student to be eligible under the Top Class Education scheme for Scheduled Caste students?
+  must_contain: ["8.00 lakh"]
+  expect_source: top-class-education-sc.pdf
+
+- id: topclass-academic-allowance
+  kind: answerable
+  question: What academic allowance does a student receive in the first year of study under the Top Class Education scheme?
+  must_contain: ["86,000"]
+  expect_source: top-class-education-sc.pdf
+
+- id: topclass-private-ceiling
+  kind: answerable
+  question: Is there a ceiling on the tuition fee paid for a student at a private sector institution under the Top Class Education scheme?
+  must_contain: ["2.00 lakh"]
+  expect_source: top-class-education-sc.pdf
+
+- id: topclass-termination
+  kind: answerable
+  question: In what circumstance is a Top Class Education scholarship terminated?
+  must_contain: ["promoted"]
+  expect_source: top-class-education-sc.pdf
+
+- id: topclass-girl-reservation
+  kind: answerable
+  question: What proportion of the scholarship slots allotted to an institution is reserved for Scheduled Caste girl students?
+  must_contain: ["30"]
+  expect_source: top-class-education-sc.pdf
+
+- id: disability-benchmark-definition
+  kind: answerable
+  question: What minimum degree of disability does a person need in order to be treated as a person with benchmark disability under these scholarship schemes?
+  must_contain: ["forty percent"]
+  expect_source: post-matric-disabilities.pdf
+
+- id: disability-income-limit
+  kind: answerable
+  question: What is the annual parental income limit for the Pre matric and Post matric Scholarship for Students with Disabilities?
+  must_contain: ["2,50,000"]
+  expect_source: post-matric-disabilities.pdf
+
+- id: disability-special-allowance
+  kind: answerable
+  question: What is the monthly special allowance for reader, escort or helper support for a student with disabilities under the Top Class Education scholarship?
+  must_contain: ["2,000"]
+  expect_source: post-matric-disabilities.pdf
+
+- id: disability-books-stationery
+  kind: answerable
+  question: What is the annual allowance for books and stationery for a student with disabilities under the Top Class Education scholarship?
+  must_contain: ["5,000"]
+  expect_source: post-matric-disabilities.pdf
+
+- id: coaching-scheme-coverage
+  kind: answerable
+  question: Do these schemes pay for coaching for entrance examinations, and under what component?
+  must_contain: ["Free Coaching"]
+  expect_source: post-matric-disabilities.pdf
+
+- id: overseas-scholarship
+  kind: answerable
+  question: Is there any scheme in these documents for studying at a university outside India?
+  must_contain: ["National Overseas"]
+  expect_source: post-matric-disabilities.pdf
+
+- id: nsp-otr-steps
+  kind: answerable
+  question: What are the steps a student follows to complete One Time Registration on the National Scholarship Portal?
+  must_contain: ["eKYC"]
+  expect_source: nsp-student-user-manual.pdf
+
+- id: nsp-login-credentials
+  kind: answerable
+  question: What credentials does a student use to log in to the National Scholarship Portal?
+  must_contain: ["OTR"]
+  expect_source: nsp-student-user-manual.pdf
+
+- id: nsp-after-final-submit
+  kind: answerable
+  question: Can a student change their application after making the final submission on the National Scholarship Portal, and what must they do if there is a wrong entry?
+  must_contain: ["withdraw"]
+  expect_source: nsp-student-user-manual.pdf
+
+- id: nsp-no-aadhaar
+  kind: answerable
+  question: What can a student use to complete registration on the National Scholarship Portal if they do not have an Aadhaar number?
+  must_contain: ["EID"]
+  expect_source: nsp-student-user-manual.pdf
+
+- id: unans-germany-phd
+  kind: unanswerable
+  question: What is the monthly stipend for a PhD student studying at a university in Germany?
+
+- id: unans-ap-jnanabhumi
+  kind: unanswerable
+  question: How do I check my Jnanabhumi application status for the Andhra Pradesh state scholarship?
+
+- id: unans-srm-hostel-fee
+  kind: unanswerable
+  question: What is the hostel fee at SRM Institute of Science and Technology and is it covered by any scholarship?
+
+- id: unans-sports-quota
+  kind: unanswerable
+  question: Is there a central scholarship for students admitted under a sports quota?
+
+- id: unans-education-loan-rate
+  kind: unanswerable
+  question: What interest rate applies to an education loan taken alongside a central scholarship?
+
+- id: unans-deadline-2027
+  kind: unanswerable
+  question: What is the last date to submit a scholarship application for the 2027 to 2028 academic year?
+
+- id: unans-pmrf
+  kind: unanswerable
+  question: What is the monthly fellowship amount under the Prime Minister's Research Fellowship?
+
+- id: unans-maulana-azad
+  kind: unanswerable
+  question: What is the stipend under the Maulana Azad National Fellowship?
+
+- id: oos-driving-licence
+  kind: out_of_scope
+  question: How do I apply for a driving licence?
+
+- id: oos-train-ticket
+  kind: out_of_scope
+  question: How do I book a train ticket from Chennai to Hyderabad?
+
+- id: oos-weather
+  kind: out_of_scope
+  question: What is the weather forecast for tomorrow?
+
+- id: oos-python-help
+  kind: out_of_scope
+  question: Write me a Python function that reverses a linked list.
+
+- id: oos-cricket
+  kind: out_of_scope
+  question: Who won the last cricket world cup?

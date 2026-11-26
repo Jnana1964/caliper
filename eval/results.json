@@ -1,0 +1,608 @@
+{
+  "verify_off": {
+    "verify_enabled": false,
+    "n": 28,
+    "rows": [
+      {
+        "id": "topclass-income-ceiling",
+        "kind": "answerable",
+        "outcome": "answered",
+        "pass": false,
+        "why": "missing ['8.00 lakh']",
+        "answer": "The annual family/parents/guardians income ceiling from all sources for a student to be eligible under the Top Class Education scheme is Rs. 8,00,000 (eight lakhs) per annum [S1, S2, S3].",
+        "citations": [
+          "post-matric-disabilities.pdf",
+          "top-class-education-sc.pdf"
+        ],
+        "latency_ms": 12647.0
+      },
+      {
+        "id": "topclass-academic-allowance",
+        "kind": "answerable",
+        "outcome": "answered",
+        "pass": true,
+        "why": "",
+        "answer": "Under the Top Class Education scheme, a student receives an academic allowance of Rs. 86,000 in the first year of study [S1]. This allowance is provided to take care of living expenses, books and stationery, and a computer/laptop of a reputed brand with accessories like a UPS and printer [S1].",
+        "citations": [
+          "top-class-education-sc.pdf"
+        ],
+        "latency_ms": 8902.5
+      },
+      {
+        "id": "topclass-private-ceiling",
+        "kind": "answerable",
+        "outcome": "answered",
+        "pass": true,
+        "why": "",
+        "answer": "Yes, there is a ceiling on the tuition fee and non-refundable charges paid for a student at a private sector institution, which is set at Rs. 2.00 lakh per annum per student [S1].",
+        "citations": [
+          "top-class-education-sc.pdf"
+        ],
+        "latency_ms": 8090.9
+      },
+      {
+        "id": "topclass-termination",
+        "kind": "answerable",
+        "outcome": "answered",
+        "pass": true,
+        "why": "",
+        "answer": "Based on the provided excerpts, a Top Class Education scholarship is terminated or discontinued in the following circumstances:\n\n* The student fails to get promoted to the next semester/class (though the scholarship will be released suo moto once the student gets promoted) [S1].\n* The student changes his/her institute/college after getting selected under the scheme [S1].",
+        "citations": [
+          "top-class-education-sc.pdf"
+        ],
+        "latency_ms": 6761.0
+      },
+      {
+        "id": "topclass-girl-reservation",
+        "kind": "answerable",
+        "outcome": "answered",
+        "pass": true,
+        "why": "",
+        "answer": "Thirty percent (30%) of the scholarship slots allotted to an institution are reserved for eligible Scheduled Caste girl students [S1, S2].",
+        "citations": [
+          "top-class-education-sc.pdf"
+        ],
+        "latency_ms": 8672.8
+      },
+      {
+        "id": "disability-benchmark-definition",
+        "kind": "answerable",
+        "outcome": "answered",
+        "pass": true,
+        "why": "",
+        "answer": "A person needs to have not less than forty percent of a specified disability to be treated as a person with benchmark disability [S1].",
+        "citations": [
+          "post-matric-disabilities.pdf"
+        ],
+        "latency_ms": 7739.9
+      },
+      {
+        "id": "disability-income-limit",
+        "kind": "answerable",
+        "outcome": "answered",
+        "pass": true,
+        "why": "",
+        "answer": "The annual parental/guardian's income limit for both the Pre-matric and Post-matric Scholarship for Students with Disabilities is that income from all sources must not exceed Rs. 2,50,000/- (Rupees two lakh fifty thousand only) per annum [S1].",
+        "citations": [
+          "post-matric-disabilities.pdf"
+        ],
+        "latency_ms": 66355.8
+      },
+      {
+        "id": "disability-special-allowance",
+        "kind": "answerable",
+        "outcome": "answered",
+        "pass": true,
+        "why": "",
+        "answer": "The monthly special allowance for reader, escort, or helper support for a student with disabilities under the Top Class Education scholarship is Rs. 2,000/- per month [S1].",
+        "citations": [
+          "post-matric-disabilities.pdf"
+        ],
+        "latency_ms": 52034.2
+      },
+      {
+        "id": "disability-books-stationery",
+        "kind": "answerable",
+        "outcome": "answered",
+        "pass": true,
+        "why": "",
+        "answer": "The annual allowance for books and stationery for a student under the Top Class Education scholarship is Rs. 5,000/- per annum [S1].",
+        "citations": [
+          "post-matric-disabilities.pdf"
+        ],
+        "latency_ms": 76716.3
+      },
+      {
+        "id": "coaching-scheme-coverage",
+        "kind": "answerable",
+        "outcome": "answered",
+        "pass": true,
+        "why": "",
+        "answer": "Yes, the schemes include a component that pays for coaching [S1, S2, S3]. It is provided under the \"Free Coaching\" component/scheme, which is for \"entrance examinations for admission to various technical and professional courses\" (as well as recruitment examinations for Group A, B, and C posts) [S1, S2, S3].",
+        "citations": [
+          "post-matric-disabilities.pdf"
+        ],
+        "latency_ms": 7512.8
+      },
+      {
+        "id": "overseas-scholarship",
+        "kind": "answerable",
+        "outcome": "answered",
+        "pass": true,
+        "why": "",
+        "answer": "Yes, there is the National Overseas Scholarship scheme for studying for a Master's Degree or Ph.D. in Institutions, Colleges, or Universities abroad [S1, S2].",
+        "citations": [
+          "post-matric-disabilities.pdf"
+        ],
+        "latency_ms": 6090.2
+      },
+      {
+        "id": "nsp-otr-steps",
+        "kind": "answerable",
+        "outcome": "answered",
+        "pass": true,
+        "why": "",
+        "answer": "Based on the provided excerpts, to complete the One Time Registration on the National Scholarship Portal, a student follows these steps:\n\n* General Instructions [S1]\n* Register Mobile Number [S1]\n* eKYC Update [S1]\n* Finish [S1]",
+        "citations": [
+          "nsp-student-user-manual.pdf"
+        ],
+        "latency_ms": 8464.2
+      },
+      {
+        "id": "nsp-login-credentials",
+        "kind": "answerable",
+        "outcome": "answered",
+        "pass": true,
+        "why": "",
+        "answer": "A student logs in using their registered credentials, which are their OTR (One Time Registration) and Date of Birth [S1].",
+        "citations": [
+          "nsp-student-user-manual.pdf"
+        ],
+        "latency_ms": 6175.7
+      },
+      {
+        "id": "nsp-after-final-submit",
+        "kind": "answerable",
+        "outcome": "refused_out_of_scope",
+        "pass": false,
+        "why": "refused (refused_out_of_scope); missing ['withdraw']; cited nothing, expected nsp-student-user-manual.pdf",
+        "answer": "That question is outside this corpus. This service only answers from the Indian government scheme documents it has ingested.",
+        "citations": [],
+        "latency_ms": 1757.9
+      },
+      {
+        "id": "nsp-no-aadhaar",
+        "kind": "answerable",
+        "outcome": "answered",
+        "pass": true,
+        "why": "",
+        "answer": "If a student does not have an Aadhaar number, they can use the following:\n\n* An active mobile number [S1].\n* An Aadhaar enrolment slip or their Parent's/Legal Guardian\u2019s Aadhaar (in case the student is a minor) [S1].\n* A mobile number linked with the EID or with the Parent's Aadhaar [S1].\n* NPCI Seeding status (desired) [S1].\n* The \"Aadhaar not assigned (I have EID)\" option to complete the step, by entering a unique 12-digit EID and the date and time of registration [8ac0b69f-d0a9-5587-80d8-1fd6413731b5].",
+        "citations": [
+          "nsp-student-user-manual.pdf"
+        ],
+        "latency_ms": 68836.1
+      },
+      {
+        "id": "unans-germany-phd",
+        "kind": "unanswerable",
+        "outcome": "refused_out_of_scope",
+        "pass": true,
+        "why": "",
+        "latency_ms": 2571.5
+      },
+      {
+        "id": "unans-ap-jnanabhumi",
+        "kind": "unanswerable",
+        "outcome": "refused_no_evidence",
+        "pass": true,
+        "why": "",
+        "latency_ms": 16968.7
+      },
+      {
+        "id": "unans-srm-hostel-fee",
+        "kind": "unanswerable",
+        "outcome": "refused_out_of_scope",
+        "pass": true,
+        "why": "",
+        "latency_ms": 1094.2
+      },
+      {
+        "id": "unans-sports-quota",
+        "kind": "unanswerable",
+        "outcome": "refused_out_of_scope",
+        "pass": true,
+        "why": "",
+        "latency_ms": 1909.6
+      },
+      {
+        "id": "unans-education-loan-rate",
+        "kind": "unanswerable",
+        "outcome": "refused_out_of_scope",
+        "pass": true,
+        "why": "",
+        "latency_ms": 1663.7
+      },
+      {
+        "id": "unans-deadline-2027",
+        "kind": "unanswerable",
+        "outcome": "refused_out_of_scope",
+        "pass": true,
+        "why": "",
+        "latency_ms": 1103.7
+      },
+      {
+        "id": "unans-pmrf",
+        "kind": "unanswerable",
+        "outcome": "refused_no_evidence",
+        "pass": true,
+        "why": "",
+        "latency_ms": 18652.3
+      },
+      {
+        "id": "unans-maulana-azad",
+        "kind": "unanswerable",
+        "outcome": "refused_no_evidence",
+        "pass": true,
+        "why": "",
+        "latency_ms": 77068.7
+      },
+      {
+        "id": "oos-driving-licence",
+        "kind": "out_of_scope",
+        "outcome": "refused_out_of_scope",
+        "pass": true,
+        "why": "",
+        "latency_ms": 2060.8
+      },
+      {
+        "id": "oos-train-ticket",
+        "kind": "out_of_scope",
+        "outcome": "refused_out_of_scope",
+        "pass": true,
+        "why": "",
+        "latency_ms": 968.3
+      },
+      {
+        "id": "oos-weather",
+        "kind": "out_of_scope",
+        "outcome": "refused_out_of_scope",
+        "pass": true,
+        "why": "",
+        "latency_ms": 1643.8
+      },
+      {
+        "id": "oos-python-help",
+        "kind": "out_of_scope",
+        "outcome": "refused_out_of_scope",
+        "pass": true,
+        "why": "",
+        "latency_ms": 1940.3
+      },
+      {
+        "id": "oos-cricket",
+        "kind": "out_of_scope",
+        "outcome": "refused_out_of_scope",
+        "pass": true,
+        "why": "",
+        "latency_ms": 1623.1
+      }
+    ],
+    "answer_accuracy": 0.8667,
+    "refusal_accuracy": 1.0,
+    "routing_accuracy": 1.0,
+    "hallucination_rate": 0.0,
+    "hallucinated_ids": [],
+    "latency_ms": {
+      "p50": 6760.96,
+      "p95": 76716.27,
+      "mean": 17000.9
+    },
+    "tokens": {
+      "in": 64115,
+      "out": 3165
+    },
+    "cost_usd": null
+  },
+  "verify_on": {
+    "verify_enabled": true,
+    "n": 28,
+    "rows": [
+      {
+        "id": "topclass-income-ceiling",
+        "kind": "answerable",
+        "outcome": "answered",
+        "pass": true,
+        "why": "",
+        "answer": "The annual family income ceiling for a student to be eligible under the Top Class Education scheme is up to Rs. 8.00 lakh (or Rs. 8,00,000/-) per annum from all sources [S1, S2, S3].",
+        "citations": [
+          "post-matric-disabilities.pdf",
+          "top-class-education-sc.pdf"
+        ],
+        "latency_ms": 9202.7
+      },
+      {
+        "id": "topclass-academic-allowance",
+        "kind": "answerable",
+        "outcome": "answered",
+        "pass": true,
+        "why": "",
+        "answer": "Under the Top Class Education scheme, a student receives an academic allowance of Rs. 86,000 in the first year of study [S1]. This is paid as a lump sum without insisting on the production of a voucher or undertaking [S50ad11c9-f529-5900-a4dd-cf398cf3a5b2], and is meant to take care of living expenses, books and stationery, and a computer/laptop of a reputed brand with accessories like a UPS and printer [S1].",
+        "citations": [
+          "top-class-education-sc.pdf"
+        ],
+        "latency_ms": 8959.1
+      },
+      {
+        "id": "topclass-private-ceiling",
+        "kind": "answerable",
+        "outcome": "answered",
+        "pass": true,
+        "why": "",
+        "answer": "Yes, there is a ceiling of Rs. 2.00 lakh per annum per student for private sector institutions under the scheme [S1].",
+        "citations": [
+          "top-class-education-sc.pdf"
+        ],
+        "latency_ms": 12084.4
+      },
+      {
+        "id": "topclass-termination",
+        "kind": "answerable",
+        "outcome": "answered",
+        "pass": true,
+        "why": "",
+        "answer": "A Top Class Education scholarship is terminated if the student fails to get promoted to the next semester or class [S1]. Additionally, a student's scholarship will be discontinued and they will not be eligible for further scholarships under the scheme if they change their institute or college after getting selected [S1].",
+        "citations": [
+          "top-class-education-sc.pdf"
+        ],
+        "latency_ms": 11667.9
+      },
+      {
+        "id": "topclass-girl-reservation",
+        "kind": "answerable",
+        "outcome": "answered",
+        "pass": true,
+        "why": "",
+        "answer": "Thirty percent (30%) of the scholarship slots allotted to an institution are reserved for eligible Scheduled Caste girl students [S1, S2].",
+        "citations": [
+          "top-class-education-sc.pdf"
+        ],
+        "latency_ms": 65754.2
+      },
+      {
+        "id": "disability-benchmark-definition",
+        "kind": "answerable",
+        "outcome": "answered",
+        "pass": true,
+        "why": "",
+        "answer": "A person needs to have not less than forty percent of a specified disability to be treated as a person with benchmark disability [S1].",
+        "citations": [
+          "post-matric-disabilities.pdf"
+        ],
+        "latency_ms": 15368.5
+      },
+      {
+        "id": "disability-income-limit",
+        "kind": "answerable",
+        "outcome": "answered",
+        "pass": true,
+        "why": "",
+        "answer": "The annual parental/guardian's income from all sources must not exceed Rs. 2,50,000/- (Rupees two lakh fifty thousand only) per annum for students to be paid the Pre-matric and Post-matric Scholarship [S1].",
+        "citations": [
+          "post-matric-disabilities.pdf"
+        ],
+        "latency_ms": 6733.6
+      },
+      {
+        "id": "disability-special-allowance",
+        "kind": "answerable",
+        "outcome": "answered",
+        "pass": true,
+        "why": "",
+        "answer": "The monthly special allowance for reader, escort, or helper support under the Top Class Education scholarship is Rs. 2,000/- per month [S1].",
+        "citations": [
+          "post-matric-disabilities.pdf"
+        ],
+        "latency_ms": 11008.0
+      },
+      {
+        "id": "disability-books-stationery",
+        "kind": "answerable",
+        "outcome": "answered",
+        "pass": true,
+        "why": "",
+        "answer": "The annual allowance for books and stationery for a student with disabilities under the Top Class Education scholarship is Rs. 5,000/- per annum [S1].",
+        "citations": [
+          "post-matric-disabilities.pdf"
+        ],
+        "latency_ms": 14399.1
+      },
+      {
+        "id": "coaching-scheme-coverage",
+        "kind": "answerable",
+        "outcome": "refused_out_of_scope",
+        "pass": false,
+        "why": "refused (refused_out_of_scope); missing ['Free Coaching']; cited nothing, expected post-matric-disabilities.pdf",
+        "answer": "That question is outside this corpus. This service only answers from the Indian government scheme documents it has ingested.",
+        "citations": [],
+        "latency_ms": 3946.7
+      },
+      {
+        "id": "overseas-scholarship",
+        "kind": "answerable",
+        "outcome": "answered",
+        "pass": true,
+        "why": "",
+        "answer": "Based on the provided documents, there is a scheme named the National Overseas Scholarship for studying for a Master's Degree or Ph.D. in Institutions, Colleges, or Universities abroad [S1, S2].",
+        "citations": [
+          "post-matric-disabilities.pdf"
+        ],
+        "latency_ms": 21463.8
+      },
+      {
+        "id": "nsp-otr-steps",
+        "kind": "answerable",
+        "outcome": "answered",
+        "pass": true,
+        "why": "",
+        "answer": "Based on the provided excerpts, the steps for a student to complete One Time Registration on the National Scholarship Portal are:\n\n* General Instructions [S1]\n* Register Mobile Number [S1]\n* eKYC Update [S1]\n* Finish [S1]\n\nThese steps are followed after using the \u2018Register yourself\u2019 link from the Login Page [S1].",
+        "citations": [
+          "nsp-student-user-manual.pdf"
+        ],
+        "latency_ms": 60924.5
+      },
+      {
+        "id": "nsp-login-credentials",
+        "kind": "answerable",
+        "outcome": "answered",
+        "pass": true,
+        "why": "",
+        "answer": "A student logs in using their registered credentials, which are their OTR (One Time Registration) and Date of Birth [S1].",
+        "citations": [
+          "nsp-student-user-manual.pdf"
+        ],
+        "latency_ms": 6397.5
+      },
+      {
+        "id": "nsp-after-final-submit",
+        "kind": "answerable",
+        "outcome": "refused_out_of_scope",
+        "pass": false,
+        "why": "refused (refused_out_of_scope); missing ['withdraw']; cited nothing, expected nsp-student-user-manual.pdf",
+        "answer": "That question is outside this corpus. This service only answers from the Indian government scheme documents it has ingested.",
+        "citations": [],
+        "latency_ms": 1924.4
+      },
+      {
+        "id": "nsp-no-aadhaar",
+        "kind": "answerable",
+        "outcome": "answered",
+        "pass": true,
+        "why": "",
+        "answer": "If a student does not have an Aadhaar number, they can use the following:\n\n* An active mobile number [S1].\n* An Aadhaar enrolment slip (EID) or their Parent's/Legal Guardian\u2019s Aadhaar (if the student is a minor) [S1].\n* A mobile number linked with the EID or the Parent's Aadhaar [S1].\n* The desired NPCI Seeding status [S1].\n* Specifically, the 'Aadhaar not assigned (I have EID)' option, which requires entering a unique 12-digit EID along with the date and time of registration [8ac0b69f-d0a9-5587-80d8-1fd6413731b5].",
+        "citations": [
+          "nsp-student-user-manual.pdf"
+        ],
+        "latency_ms": 6749.1
+      },
+      {
+        "id": "unans-germany-phd",
+        "kind": "unanswerable",
+        "outcome": "refused_out_of_scope",
+        "pass": true,
+        "why": "",
+        "latency_ms": 1876.9
+      },
+      {
+        "id": "unans-ap-jnanabhumi",
+        "kind": "unanswerable",
+        "outcome": "refused_no_evidence",
+        "pass": true,
+        "why": "",
+        "latency_ms": 19086.6
+      },
+      {
+        "id": "unans-srm-hostel-fee",
+        "kind": "unanswerable",
+        "outcome": "refused_out_of_scope",
+        "pass": true,
+        "why": "",
+        "latency_ms": 1724.3
+      },
+      {
+        "id": "unans-sports-quota",
+        "kind": "unanswerable",
+        "outcome": "refused_no_evidence",
+        "pass": true,
+        "why": "",
+        "latency_ms": 81475.0
+      },
+      {
+        "id": "unans-education-loan-rate",
+        "kind": "unanswerable",
+        "outcome": "refused_out_of_scope",
+        "pass": true,
+        "why": "",
+        "latency_ms": 3370.8
+      },
+      {
+        "id": "unans-deadline-2027",
+        "kind": "unanswerable",
+        "outcome": "refused_no_evidence",
+        "pass": true,
+        "why": "",
+        "latency_ms": 17030.7
+      },
+      {
+        "id": "unans-pmrf",
+        "kind": "unanswerable",
+        "outcome": "refused_no_evidence",
+        "pass": true,
+        "why": "",
+        "latency_ms": 13401.5
+      },
+      {
+        "id": "unans-maulana-azad",
+        "kind": "unanswerable",
+        "outcome": "refused_no_evidence",
+        "pass": true,
+        "why": "",
+        "latency_ms": 71903.7
+      },
+      {
+        "id": "oos-driving-licence",
+        "kind": "out_of_scope",
+        "outcome": "refused_out_of_scope",
+        "pass": true,
+        "why": "",
+        "latency_ms": 3784.6
+      },
+      {
+        "id": "oos-train-ticket",
+        "kind": "out_of_scope",
+        "outcome": "refused_out_of_scope",
+        "pass": true,
+        "why": "",
+        "latency_ms": 820.1
+      },
+      {
+        "id": "oos-weather",
+        "kind": "out_of_scope",
+        "outcome": "refused_out_of_scope",
+        "pass": true,
+        "why": "",
+        "latency_ms": 2048.3
+      },
+      {
+        "id": "oos-python-help",
+        "kind": "out_of_scope",
+        "outcome": "refused_out_of_scope",
+        "pass": true,
+        "why": "",
+        "latency_ms": 1777.8
+      },
+      {
+        "id": "oos-cricket",
+        "kind": "out_of_scope",
+        "outcome": "refused_out_of_scope",
+        "pass": true,
+        "why": "",
+        "latency_ms": 1346.0
+      }
+    ],
+    "answer_accuracy": 0.8667,
+    "refusal_accuracy": 1.0,
+    "routing_accuracy": 1.0,
+    "hallucination_rate": 0.0,
+    "hallucinated_ids": [],
+    "latency_ms": {
+      "p50": 8959.06,
+      "p95": 71903.71,
+      "mean": 17008.2
+    },
+    "tokens": {
+      "in": 83759,
+      "out": 3553
+    },
+    "cost_usd": null
+  }
+}
