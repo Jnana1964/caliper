@@ -7,6 +7,7 @@
 Ingest → Retrieve → Grade → Answer → **Verify** → Release or Refuse
 
 ![status](https://img.shields.io/badge/status-running-3FB950)
+![live](https://img.shields.io/badge/live-caliper--rag.vercel.app-000000?logo=vercel&logoColor=white)
 ![Python](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white)
 ![FastAPI](https://img.shields.io/badge/FastAPI-async-009688?logo=fastapi&logoColor=white)
 ![LangGraph](https://img.shields.io/badge/LangGraph-state%20graphs-1C3C3C?logo=langchain&logoColor=white)
@@ -19,11 +20,25 @@ Ingest → Retrieve → Grade → Answer → **Verify** → Release or Refuse
 
 **Answers only what the documents support. Cites every claim. Refuses the rest.**
 
-🎬 [Demo video](media/caliper-demo.mp4) · 📊 [Slides](media/caliper-deck.pdf) · 📘 [Documentation](DOCUMENTATION.md)
+🌐 **[Try it live](https://caliper-rag.vercel.app)** · 🎬 [Demo video](media/caliper-demo.mp4) · 📊 [Slides](media/caliper-deck.pdf) · 📘 [Documentation](DOCUMENTATION.md)
 
 *A caliper measures precisely. This one measures whether its own answers are actually supported by the documents it read.*
 
 </div>
+
+---
+
+## 🌐 Live
+
+**[caliper-rag.vercel.app](https://caliper-rag.vercel.app)**
+
+Running against the real corpus described in [`SOURCES.md`](SOURCES.md): six Indian government scholarship documents, 170 pages, 289 chunks, in a hosted Qdrant cluster. Ask it something a scheme document answers and it answers with the page cited. Ask it something they do not cover and it refuses.
+
+Two honest notes about the hosted copy.
+
+It runs on serverless functions, so the rolling latency window at `/metrics` and the per request trace files are not meaningful there. Those are features of the service run as a service. Use `docker compose up` to see them.
+
+It answers from a free model quota, so the demo caps itself at a number of questions per hour and says so plainly when it hits the cap. That window is per running instance rather than global, which makes it a speed bump against casual abuse and not a quota system. Run your own copy if you want to hammer it.
 
 ---
 
@@ -35,11 +50,12 @@ An answer released with its citation, then a draft withheld because the sources 
 
 | | |
 |---|---|
+| 🌐 **Live service** | [caliper-rag.vercel.app](https://caliper-rag.vercel.app) · the real corpus, real answers, real refusals |
 | 🎥 **Full walkthrough, 64 seconds** | [`media/caliper-demo.mp4`](media/caliper-demo.mp4) · one answer and all three refusal paths, with the agent trace and the cost panel |
 | 📊 **Presentation, 13 slides** | [`media/caliper-deck.pdf`](media/caliper-deck.pdf) · architecture, the three refusal paths, the evaluation design and references |
 | 📘 **Full documentation** | [`DOCUMENTATION.md`](DOCUMENTATION.md) · every module, every command, verified by running it |
 
-Both recordings used the deterministic offline stub, so the answer *text* is a placeholder. What they show is the decision path and the refusal gates, not answer quality. See [Results](#-results).
+Both recordings used the deterministic offline stub, so the answer *text* in them is a placeholder. What they show is the decision path and the refusal gates, not answer quality. For real answers use the live link; for measured answer quality see [Results](#-results).
 
 ---
 
@@ -54,7 +70,7 @@ So the agent has two reflection points and is measured on the questions it shoul
 | **grade / plan** | Before answering, whether what it gathered is genuinely relevant. Topical overlap is not relevance. |
 | **verify** | After drafting, whether every claim is supported by the source text. An unsupported draft is withheld, not returned. |
 
-The eval harness runs the whole question set twice, verification off then on, and reports the difference. That number goes in this README whichever way it points.
+The eval harness runs the whole question set twice, verification off then on, and reports the difference. That number is in this README, and it did not point the way I hoped.
 
 ---
 
@@ -117,42 +133,87 @@ React with Vite and Tailwind, streaming over server sent events.
 
 Published token prices change. A cost figure whose provenance nobody recorded is worse than an honest "unconfigured", so the code refuses to invent one. The UI explains this where the number would be.
 
+**This is not hypothetical.** The model these results were measured on, `gemini-3.5-flash-lite`, is available through the API but is not listed on Google's published pricing page. There is no verified rate to record, so Caliper reports no cost rather than a number it made up. This is the case that behaviour was written for, and it caught it.
+
 ---
 
 ## 📊 Results
 
-> Run `make eval-compare` against your own corpus and paste the real output here.
-> Leave it blank rather than filling it with numbers you have not measured. An unfilled table costs you nothing, an invented one costs you the interview.
+28 questions, a hand written answer key, six Indian government scholarship documents totalling 170 pages ingested as 289 chunks. Model `gemini-3.5-flash-lite`. Every figure below comes from [`eval/results.json`](eval/results.json), which is committed, and reproduces with `make eval-compare`.
 
 | Metric | verify OFF | verify ON |
 |---|---|---|
-| Answer accuracy (answerable) | | |
-| Refusal accuracy (unanswerable) | | |
-| Routing accuracy (out of scope) | | |
-| **Hallucination rate** | | |
-| Latency p50 / p95 | | |
-| Cost per question | | |
+| Answer accuracy (answerable) | **0.87** | **0.87** |
+| Refusal accuracy (unanswerable) | **1.00** | **1.00** |
+| Routing accuracy (out of scope) | **1.00** | **1.00** |
+| **Hallucination rate** | **0.00** | **0.00** |
+| Latency p50 | 6.8s | 9.0s |
+| Input tokens, whole run | 64,115 | 83,759 |
+| Cost per question | unconfigured | unconfigured |
 
-**Agent against pipeline**, same question set:
+Thirteen of fifteen answerable questions answered correctly with the expected document cited. All eight unanswerable and all five out of scope questions were refused correctly, in both runs.
 
-| Metric | pipeline | agent |
+Corpus: *6 documents, 289 chunks, ingested 2026-11-26.*
+Evaluation set: *28 questions: 15 answerable / 8 unanswerable / 5 out of scope.*
+
+Latency p95 is deliberately not quoted. The run was made on a free tier that answers 429 with a stated retry delay, and those sleeps fall inside the timed section, so the tail measures someone else's rate limiter rather than this system.
+
+**Agent against pipeline was not measured in this run.** The comparison harness exists and both modes run on the same corpus, but the figures above are the verify ablation only. Publishing a mode comparison without having run it would be the exact failure this project is about.
+
+### Cost of a refusal against an answer
+
+Refusal paths are ordered cheapest first, and the ordering is worth what it costs:
+
+| Path | Model calls | Input tokens | Latency |
+|---|---|---|---|
+| Out of scope, refused at the router | 1 | 112 | 1.6s |
+| In scope, no evidence, refused after gathering | 1 | 383 | 3.0s |
+| Grounded answer with citations | 4 | 5,006 | 12.9s |
+
+An out of scope question is rejected for one forty fifth of the input tokens of an answer, and never touches the vector store. That is the whole reason routing happens before retrieving.
+
+### The verify node did not earn its tokens on this corpus
+
+| | verify OFF | verify ON |
 |---|---|---|
-| Answer accuracy | | |
-| Hallucination rate | | |
-| Tool calls per question | n/a | |
-| Tokens per question | | |
+| Hallucination rate | 0.00 | 0.00 |
+| Input tokens | 64,115 | 83,759 |
 
-Corpus: _N documents, M chunks, ingested YYYY-MM-DD._
-Evaluation set: _K questions: answerable / unanswerable / out of scope._
+It caught nothing and cost 19,644 extra input tokens, about 31 percent more. Published rather than buried. The honest reading is that the two refusal paths ahead of it already removed everything it would have caught here, not that self verification is worthless. A corpus with closer near misses would be a fairer test, and this one was not adversarial enough to make the node work for its tokens.
+
+### What the evaluation caught
+
+Running against a real corpus found a defect in the one feature this project exists to provide.
+
+**Citations were silently dropping.** Answers shipped with markers like `[S1, S2, S3]` in the text and an empty sources list behind them, while the interface still said every claim had been checked. The parser tested for the literal string `[S1]`, which matches a single marker but not a grouped one. An answer that looks verified and is not is worse than an answer with no citations at all. Found by the eval reporting `cited nothing` on answers that were otherwise correct, reproduced by hand, and fixed in `_cited_markers`, which now reads marker numbers from inside bracketed groups so `[S1]`, `[S1, S2]` and `[S1][S2]` are all understood.
+
+**Two questions in the answer key were wrong, not the system.** They were labelled unanswerable and scored as hallucinations. Reading what the system actually said showed it had cited real pages, answered accurately, and stated plainly what the excerpts did not cover. The corpus did support those answers. The labels were corrected against the documents. Relabelling because a document proves a label wrong is correct; relabelling because the number looks better is not, and the difference is the entire value of an evaluation.
 
 ### ⚠️ Known limitations
 
-- BM25 is built in process by scanning the collection at startup. Fine at a few thousand chunks, replace with Qdrant sparse vectors before it is not.
-- `verify` costs an extra model call per request. The ablation above is the data needed to decide whether that is worth paying.
-- Scanned PDFs with no text layer ingest as nothing. `app.ingest` reports the count of empty pages, run OCR on those first.
-- No recall@k against a labelled relevance set. Retrieval is measured end to end only.
-- Single turn. No conversation memory.
-- CORS is wide open for local development. Narrow it before deploying anywhere real.
+Measured, not guessed. Every item below was observed during evaluation on this corpus.
+
+**The router over refuses some in scope questions.** "Can a student change an application after final submission" was refused as out of scope in both runs, although the user manual answers it directly. Procedural questions about the portal read as off topic.
+
+**Routing is not deterministic.** One question failed with verify off and passed with verify on while another did the reverse, both at the router, which runs before the verify node. A single run of a single question is not a result.
+
+**Cross document confusion is real in this corpus.** Two of the six documents describe a scheme called Top Class Education with an eight lakh income ceiling, written as `Rs. 8.00 lakh` in one and `Rs.8,00,000` in the other. Asked about the Scheduled Caste scheme, the system sometimes answers from the disability scheme document. The figure happens to match, so the answer is correct by accident. Had the ceilings differed it would have been confidently wrong with a plausible citation.
+
+**Retrieval reads have no retry.** Writes during ingestion back off and retry; a dropped connection during a query surfaces to the user as an error.
+
+**The evaluation matcher is a substring check.** A correct answer written in a different number format scores as a failure, so the answer key uses the notation each document uses.
+
+**The public demo cap is per instance, not global.** On serverless a burst spread across instances can exceed the nominal rate. It is a speed bump, not a quota system.
+
+**BM25 is built in process** by scanning the collection at startup. Fine at a few thousand chunks, replace with Qdrant sparse vectors before it is not.
+
+**Scanned PDFs with no text layer ingest as nothing.** One page of the 170 in this corpus has no text layer, and `app.ingest` reports the count rather than passing it through silently. Run OCR on anything worse.
+
+**No recall@k against a labelled relevance set.** Retrieval is measured end to end only.
+
+**Single turn.** No conversation memory.
+
+**The question set and the router prompt are specific to this corpus.** Point the pipeline at different documents and both must be rewritten, or the numbers mean nothing.
 
 ---
 
@@ -196,11 +257,24 @@ make loadtest
 
 ### Deploying
 
+The live service runs on Vercel as a single project: the React build is served as static files, and `api/index.py` exposes the FastAPI app as a serverless function. `vercel.json` holds the build command and the rewrite that maps `/api/*` onto it, so deployed paths match what Vite proxies in development and the app itself stays unaware of where it is running.
+
+Import the repository in Vercel, set the application preset to **Other** so `vercel.json` is respected, and set five environment variables:
+
+```
+GEMINI_API_KEY      your key, on a project with no billing account attached
+QDRANT_URL          your hosted cluster endpoint, including :6333
+QDRANT_API_KEY      your cluster key
+GEN_MODEL           gemini-3.5-flash-lite
+OFFLINE             0
+```
+
+`ALLOWED_ORIGINS` and `MAX_ASKS_PER_HOUR` are optional and default sensibly.
+
+Serverless suits the request path and not the observability: the rolling metrics window and the JSONL traces assume one long lived process, so they are not meaningful on the hosted copy. The repository also ships a `Dockerfile` and `docker-compose.yml` for running it as an actual service, where they are.
+
 ```bash
-gcloud run deploy caliper \
-  --source . --region asia-south1 --allow-unauthenticated \
-  --set-env-vars "QDRANT_URL=<your qdrant url>,GEN_MODEL=gemini-2.5-flash" \
-  --set-secrets "GEMINI_API_KEY=gemini-key:latest"
+docker compose up --build -d
 ```
 
 The container reads `$PORT`, runs as a non root user, and ships no secrets.
@@ -210,9 +284,11 @@ The container reads `$PORT`, runs as a non root user, and ships no secrets.
 ## 🗂️ Layout
 
 ```
+api/
+  index.py          Vercel entrypoint; strips the /api prefix in ASGI
 app/
   config.py         settings; pricing loaded from YAML, never hardcoded
-  llm.py            Gemini client, offline stub, token and cost metering
+  llm.py            Gemini client, offline stub, retry, token and cost metering
   tools.py          the agent's toolbox + an AST-parsed calculator
   store.py          chunking, Qdrant dense search, BM25, RRF fusion
   ingest.py         PDF/text → chunks → embeddings, reports empty pages
@@ -223,7 +299,7 @@ app/
     build.py        both graphs, with a verify-off ablation path
   main.py           /ask, /ask/stream (SSE), /metrics, /healthz, /documents
 frontend/           React + Vite + Tailwind; live agent trace, citations, cost
-eval/               question set, harness, ablation
+eval/               question set, answer key, harness, ablation, results.json
 tests/              69 offline tests
 media/              demo video, preview GIF, slide deck
 scripts/
@@ -244,6 +320,8 @@ The evaluation set is the project. Three kinds, and the second is the one most R
 | **out_of_scope** | Not about the corpus at all. Refused before any retrieval spend. |
 
 Grading is substring and citation assertions against a human written key, not a model marking its own homework.
+
+Two rules learned the hard way while writing [`eval/questions.yaml`](eval/questions.yaml). Take the required substring from the document, never from the system's own answer, or the eval stops measuring anything. And check that an unanswerable question really is absent before trusting the label, because one the corpus quietly answers will be scored as a hallucination that never happened.
 
 ---
 
